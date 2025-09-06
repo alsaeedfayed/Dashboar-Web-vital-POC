@@ -32,7 +32,7 @@ app.use(
     maxAge: '1y',
     index: false,
     redirect: false,
-  }),
+  })
 );
 
 /**
@@ -42,9 +42,19 @@ app.use((req, res, next) => {
   angularApp
     .handle(req)
     .then((response) =>
-      response ? writeResponseToNodeResponse(response, res) : next(),
+      response ? writeResponseToNodeResponse(response, res) : next()
     )
     .catch(next);
+});
+
+/**
+ * web vitals
+ */
+app.post('/__web_vitals', (req, res) => {
+  // req.body contains the metric object exported by web-vitals
+  console.log('RUM metric:', req.body);
+  // TODO: persist to DB or forward to analytics (BigQuery, Sentry, Logflare, etc.)
+  res.sendStatus(204);
 });
 
 /**
