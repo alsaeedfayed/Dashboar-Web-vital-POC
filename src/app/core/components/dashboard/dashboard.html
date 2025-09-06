@@ -1,0 +1,30 @@
+<div class="dashboard">
+  <header class="header">
+    <h1>Performance Dashboard</h1>
+  </header>
+
+  <aside class="sidebar">
+    <ul>
+      <li>Overview</li>
+      <li>Users</li>
+      <li>Sales</li>
+      <li>Performance</li>
+    </ul>
+  </aside>
+
+  <main class="content">
+    <section class="hero">
+      <h2>Hero Chart (LCP target)</h2>
+      <canvas #myChart></canvas>
+    </section>
+
+    <section class="widgets">
+      @for (stat of stats(); track $index) {
+      <div class="widget">
+        <h3>{{ stat.label }}</h3>
+        <p>{{ stat.value }}</p>
+      </div>
+      }
+    </section>
+  </main>
+</div>

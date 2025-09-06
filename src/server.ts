@@ -50,10 +50,26 @@ app.use((req, res, next) => {
 /**
  * web vitals
  */
+// enable both JSON + raw text parsing
+app.use(express.json());
+app.use(express.text());
+
 app.post('/__web_vitals', (req, res) => {
-  // req.body contains the metric object exported by web-vitals
-  console.log('RUM metric:', req.body);
-  // TODO: persist to DB or forward to analytics (BigQuery, Sentry, Logflare, etc.)
+  let metric;
+
+  // handle sendBeacon (string body) vs fetch (parsed JSON)
+  if (typeof req.body === 'string') {
+    try {
+      metric = JSON.parse(req.body);
+    } catch (e) {
+      console.error('Failed to parse metric body:', req.body);
+    }
+  } else {
+    metric = req.body;
+  }
+
+  console.log('RUM metric:', metric);
+
   res.sendStatus(204);
 });
 
